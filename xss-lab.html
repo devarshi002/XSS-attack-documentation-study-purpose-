@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>XSS Stored Lab</title>
+</head>
+<body>
+
+  <h2>Comment Section</h2>
+
+  <input type="text" id="userInput" placeholder="Enter comment" />
+  <button onclick="addComment()">Post</button>
+
+  <div id="comment"></div>
+
+  <script>
+    // Load saved comments on page load
+    function loadComments() {
+      const saved = localStorage.getItem("comments");
+      if (saved) {
+        document.getElementById("comment").innerHTML = saved;
+      }
+    }
+
+    // Add new comment (INTENTIONALLY VULNERABLE)
+    function addComment() {
+      const input = document.getElementById("userInput").value;
+
+      let existing = localStorage.getItem("comments") || "";
+      existing += "<p>" + input + "</p>";
+
+      localStorage.setItem("comments", existing);
+
+      loadComments();
+    }
+
+    // Run on page load
+    loadComments();
+  </script>
+
+</body>
+</html>
